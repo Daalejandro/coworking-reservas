@@ -11,20 +11,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+
 @Entity 
 @Table(name = "reservaciones")
-public class Reservacion {
+public class Reservation {
 
     @Id 
     private UUID id;
 
-    @ManyToOne 
+    @ManyToOne
     @JoinColumn(name = "usuario_id",nullable = false)
-    private Usuarios usuarios;
+    private Users usuarios;
 
     @ManyToOne 
     @JoinColumn (name = "espacio_id", nullable = false)
-    private Espacios espacios;
+    private Space espacios;
 
     
     private LocalDateTime horaInicio;

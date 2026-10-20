@@ -5,14 +5,17 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity 
+@Entity
 @Table(name = "espacios")
-public class Espacios {
+public class Space {
 
-    @Id 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String nombre;
@@ -20,7 +23,7 @@ public class Espacios {
     private String tipo;
 
     private Integer capacidad;
-    
+
     private String ubicacion;
 
     @Column(precision = 10, scale = 2)
@@ -28,7 +31,7 @@ public class Espacios {
 
     private boolean disponible;
 
-    public Espacios() {
+    public Space() {
     }
 
     public UUID getId() {
@@ -86,8 +89,5 @@ public class Espacios {
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
-
-
-    
 
 }

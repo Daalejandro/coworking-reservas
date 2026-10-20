@@ -3,21 +3,24 @@ package com.bancocuscatlan.mcvs.coworking.reservas.entities;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity 
 @Table (name="usuarios")
-public class Usuarios {
+public class Users {
 
     @Id
+    @GeneratedValue (strategy = GenerationType.UUID)
     private UUID id;
     
     private String nombre;
     private String contraseña;
     private String correo;
 
-    public Usuarios() {
+    public Users() {
 
     }
 

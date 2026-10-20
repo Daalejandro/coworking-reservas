@@ -1,0 +1,12 @@
+package com.bancocuscatlan.mcvs.coworking.reservas.repositories;
+
+import java.util.UUID;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.bancocuscatlan.mcvs.coworking.reservas.entities.Space;
+
+public interface EspacioRepositorio extends CrudRepository<Space,UUID>{
+
+
+}
