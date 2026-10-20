@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bancocuscatlan.mcvs.coworking.reservas.entities.Space;
 import com.bancocuscatlan.mcvs.coworking.reservas.repositories.EspacioRepositorio;
 
-
-@Service 
+@Service
 public class SpaceServiceImpl implements ISpaceService {
 
     private SpaceMapper spaceMapper;
@@ -26,6 +25,7 @@ public class SpaceServiceImpl implements ISpaceService {
         this.repositorio = repositorio;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<SpaceResponse> findAll() {
         List<Space> list = (List<Space>) repositorio.findAll();
@@ -33,41 +33,48 @@ public class SpaceServiceImpl implements ISpaceService {
         return spaceMapper.toResponseList(list);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<SpaceResponse> findById(UUID id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+
+        return repositorio.findById(id).map(s -> spaceMapper.toSpaceResponse(s));
+
     }
 
     @Override
     public SpaceResponse save(SpaceRequest espacios) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+
+        Space space = repositorio.save(spaceMapper.toSpace(espacios));
+        return spaceMapper.toSpaceResponse(space);
+
     }
 
     @Override
     public Optional<SpaceResponse> update(UUID id, SpaceRequest space) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+
+        Optional<Space> optionalSpace = repositorio.findById(id);
+
+        if (optionalSpace.isPresent()) {
+            Space spaceUpdate = optionalSpace.orElseThrow();
+            spaceUpdate.setNombre(space.getNombre());
+            spaceUpdate.setTipo(space.getTipo());
+            spaceUpdate.setCapacidad(space.getCapacidad());
+            spaceUpdate.setUbicacion(space.getUbicacion());
+            spaceUpdate.setTarifa(space.getTarifa());
+            spaceUpdate.setDisponible(space.isDisponible());
+
+            return Optional.of(spaceMapper.toSpaceResponse(repositorio.save(spaceUpdate)));
+
+        }
+
+        return optionalSpace.map(s-> spaceMapper.toSpaceResponse(s));
     }
 
     @Override
     public void delete(UUID id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+      
+        repositorio.deleteById(id);
     }
 
-
-
-/* 
-            Space sP = optionalSpace.orElseThrow();
-            sP.setNombre(space.getNombre());
-            sP.setTipo(space.getTipo());
-            sP.setCapacidad(space.getCapacidad());
-            sP.setUbicacion(space.getUbicacion());
-            sP.setDisponible(space.isDisponible());
-
-            return Optional.of(repositorio.save(sP));
- */
 
 }

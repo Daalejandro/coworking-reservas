@@ -14,8 +14,6 @@ import lombok.Setter;
 public class SpaceRequest {
 
 
-    private UUID id;
-
     private String nombre;
 
     private String tipo;
