@@ -1,7 +1,6 @@
 package com.bancocuscatlan.mcvs.coworking.reservas.entities;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
