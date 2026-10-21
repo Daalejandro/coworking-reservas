@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bancocuscatlan.mcvs.coworking.reservas.entities.Space;
+import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.SpaceNotFoudException;
 import com.bancocuscatlan.mcvs.coworking.reservas.repositories.EspacioRepositorio;
 
 @Service
@@ -37,7 +38,11 @@ public class SpaceServiceImpl implements ISpaceService {
     @Override
     public Optional<SpaceResponse> findById(UUID id) {
 
-        return repositorio.findById(id).map(s -> spaceMapper.toSpaceResponse(s));
+        Space optionalspace =repositorio.findById(id).orElseThrow(()-> new SpaceNotFoudException("No se encuentra el espacio"));
+
+        return  Optional.of(spaceMapper.toSpaceResponse(optionalspace));
+
+        
 
     }
 
@@ -61,7 +66,7 @@ public class SpaceServiceImpl implements ISpaceService {
             spaceUpdate.setCapacidad(space.getCapacidad());
             spaceUpdate.setUbicacion(space.getUbicacion());
             spaceUpdate.setTarifa(space.getTarifa());
-            spaceUpdate.setDisponible(space.isDisponible());
+            spaceUpdate.setDisponible(space.getDisponible());
 
             return Optional.of(spaceMapper.toSpaceResponse(repositorio.save(spaceUpdate)));
 
