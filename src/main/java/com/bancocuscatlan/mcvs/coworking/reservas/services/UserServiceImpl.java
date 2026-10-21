@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.management.relation.Role;
 
 import org.springframework.stereotype.Service;
 
@@ -76,13 +75,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public Optional<UserResponse> update(UUID id, UserRequest userRequest) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
     public void delete(UUID id) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 

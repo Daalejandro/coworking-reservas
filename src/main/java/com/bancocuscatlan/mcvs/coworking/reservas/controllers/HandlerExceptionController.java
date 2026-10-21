@@ -11,6 +11,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.Error;
 import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.SpaceNotFoudException;
+import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.SpaceOccupiedException;
 
 import tools.jackson.databind.exc.InvalidFormatException;
 
@@ -55,11 +56,22 @@ public class HandlerExceptionController {
 
     }
 
-    @ExceptionHandler (SpaceNotFoudException.class)
-    public ResponseEntity<Error> SpaceNotFounException(Exception e){
+    @ExceptionHandler(SpaceNotFoudException.class)
+    public ResponseEntity<Error> SpaceNotFounException(Exception e) {
         Error error = new Error();
         error.setDate(new Date());
         error.setError("Espacio no encontrado");
+        error.setMessage(e.getMessage());
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(error);
+
+    }
+
+    @ExceptionHandler(SpaceOccupiedException.class)
+    public ResponseEntity<Error> SpaceOccupiedException(Exception e) {
+        Error error = new Error();
+        error.setDate(new Date());
+        error.setError("Espacio no disponible");
         error.setMessage(e.getMessage());
         error.setStatus(HttpStatus.NOT_FOUND.value());
         return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(error);
