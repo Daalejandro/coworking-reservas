@@ -9,6 +9,7 @@ import com.bancocuscatlan.mcvs.coworking.reservas.dto.request.PaymantRequest;
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.response.PaymantResponse;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 
 @Service
 public class PagoService {
@@ -22,6 +23,7 @@ public class PagoService {
     }
 
     @CircuitBreaker(name = "items", fallbackMethod = "pagoFallback")
+    @TimeLimiter(name = "items")
     public PaymantResponse validar(PaymantRequest request) {
 
         return paymantFeingClient.validar(request);

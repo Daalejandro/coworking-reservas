@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.mapper.UserMapper;
@@ -24,10 +24,13 @@ public class UserServiceImpl implements IUserService {
     private RolRepository rolRepository;
     private UserRepository userRepositorio;
     private UserMapper userMapper;
+    private PasswordEncoder passwordEncoder;
 
 
-    public UserServiceImpl(UserRepository userRepositorio,UserMapper userMapper,RolRepository rolRepository) {
-
+    public UserServiceImpl(UserRepository userRepositorio,UserMapper userMapper,RolRepository rolRepository,
+        PasswordEncoder passwordEncoder) {
+        
+            this.passwordEncoder=passwordEncoder;
         this.rolRepository = rolRepository;
         this.userMapper = userMapper;
         this.userRepositorio = userRepositorio;
@@ -66,6 +69,8 @@ public class UserServiceImpl implements IUserService {
 
         
         usuario.setRoles(listaRoles);
+        usuario.setContrasenia(passwordEncoder.encode(userRequest.getContrasenia()));
+        
 
         System.out.println(usuario.toString());
         return userMapper.toUserResponse(userRepositorio.save(usuario));

@@ -4,15 +4,13 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.bancocuscatlan.mcvs.coworking.reservas.clients.PaymantFeingClient;
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.mapper.ReservationMapper;
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.request.PaymantRequest;
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.request.ReservationRequest;
@@ -27,15 +25,16 @@ import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.SpaceOccupiedExcept
 import com.bancocuscatlan.mcvs.coworking.reservas.repositories.EspacioRepositorio;
 import com.bancocuscatlan.mcvs.coworking.reservas.repositories.ReservationRepository;
 import com.bancocuscatlan.mcvs.coworking.reservas.repositories.UserRepository;
+import com.bancocuscatlan.mcvs.coworking.reservas.services.observer.ActualizarCacheReportesEvent;
+import com.bancocuscatlan.mcvs.coworking.reservas.services.observer.ReservaConfirmadaEvent;
 
-import feign.FeignException;
+
 
 @Service
 public class ReservationServiceImpl implements IReservationService {
 
-    private static final Logger log = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
-    
+    private final ApplicationEventPublisher eventPublisher;
     private PagoService pagoService;
     private NotificaionService notificaionService;
 
@@ -44,7 +43,7 @@ public class ReservationServiceImpl implements IReservationService {
     private EspacioRepositorio spaceRepository;
     private UserRepository userRepository;
 
-    public ReservationServiceImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper,
+    public ReservationServiceImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper,ApplicationEventPublisher eventPublisher,
             EspacioRepositorio spaceRepository, UserRepository userRepository,PagoService pagoService,NotificaionService notificaionService) {
         this.userRepository = userRepository;
         this.spaceRepository = spaceRepository;
@@ -52,6 +51,7 @@ public class ReservationServiceImpl implements IReservationService {
         this.reservationMapper = reservationMapper;
         this.pagoService=pagoService;
         this.notificaionService=notificaionService;
+        this.eventPublisher=eventPublisher;
     }
 
     @Transactional
@@ -124,16 +124,15 @@ public class ReservationServiceImpl implements IReservationService {
             reservation.setStatus(ReservationStatus.CONFIRMED);
             reservationRepository.save(reservation);
 
-            notificaionService.enviarCorreo(reservation.getUsuarios().getCorreo());
+            eventPublisher.publishEvent(new ReservaConfirmadaEvent(reservation.getId(),reservation.getUsuarios().getCorreo()));
+            eventPublisher.publishEvent(new ActualizarCacheReportesEvent(reservation.getHoraInicio(),reservation.getHoraFin()));        //llamamos al observador para eliminar cache
+
 
             return new PaymantResponse(true,"Pago aprobado. Reserva confirmada");
-
               
         }
 
-        return new PaymantResponse(
-                false,
-                "Pago rechazado. La reserva permanece pendiente de pago");
+        return respuesta;
     }
 
     private BigDecimal calcularTotal(

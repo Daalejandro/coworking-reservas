@@ -20,5 +20,5 @@ public class ReservationResponse {
         LocalDateTime horaInicio;
         LocalDateTime horaFin;
         ReservationStatus status;
-        BigDecimal tota;
+        BigDecimal total;
 }

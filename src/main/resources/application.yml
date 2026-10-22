@@ -3,6 +3,10 @@ spring:
     name: coworking-reservas
   profiles:
     default: dev
+  cache:
+    type: simple
+    cache-names:
+      - ocupacion
     
 management:
   endpoints:
@@ -41,4 +45,5 @@ resilience4j:
         base-config: defecto
        
       
-      
+
+ 

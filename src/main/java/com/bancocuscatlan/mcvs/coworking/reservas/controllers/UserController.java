@@ -18,7 +18,7 @@ import com.bancocuscatlan.mcvs.coworking.reservas.services.IUserService;
 import jakarta.validation.Valid;
 
 @RestController 
-@RequestMapping ("api/users")
+@RequestMapping ("/api/users")
 public class UserController {
 
 
