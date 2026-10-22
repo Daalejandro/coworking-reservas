@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bancocuscatlan.mcvs.coworking.reservas.dto.request.PaymantRequest;
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.request.ReservationRequest;
+import com.bancocuscatlan.mcvs.coworking.reservas.dto.response.PaymantResponse;
 import com.bancocuscatlan.mcvs.coworking.reservas.services.IReservationService;
 
 import jakarta.validation.Valid;
@@ -26,7 +28,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @PostMapping 
+    @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody ReservationRequest reservationRequest, BindingResult result) {
 
         if (result.hasFieldErrors()) {
@@ -34,6 +36,14 @@ public class ReservationController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.create(reservationRequest));
 
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<PaymantResponse> validarPago(
+            @Valid @RequestBody PaymantRequest request) {
+
+        return ResponseEntity.ok(
+                reservationService.validarPago(request));
     }
 
     private ResponseEntity<?> validation(BindingResult result) {
