@@ -1,5 +1,6 @@
 package com.bancocuscatlan.mcvs.coworking.reservas.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.ToString;
 
-@ToString 
+@ToString
 @Entity
 @Table(name = "usuarios")
 public class Users {
@@ -32,10 +33,11 @@ public class Users {
     @JsonIgnoreProperties({ "usuarios", "handler", "hibernateLazyInitializer" })
     @ManyToMany
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
-    @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
+            @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
     private List<Roles> roles;
 
     public Users() {
+        this.roles = new ArrayList<>();
 
     }
 
@@ -78,7 +80,5 @@ public class Users {
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
-
-    
 
 }

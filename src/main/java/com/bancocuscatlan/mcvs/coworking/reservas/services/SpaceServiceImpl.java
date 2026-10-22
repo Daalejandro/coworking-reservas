@@ -75,6 +75,9 @@ public class SpaceServiceImpl implements ISpaceService {
         return optionalSpace.map(s-> spaceMapper.toSpaceResponse(s));
     }
 
+    
+
+
     @Override
     public void delete(UUID id) {
       

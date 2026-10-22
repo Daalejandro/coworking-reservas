@@ -56,15 +56,26 @@ public class SpaceControllers {
     @PostMapping()
     public ResponseEntity<?> create(@Valid @RequestBody SpaceRequest space, BindingResult result) {
 
-        if(result.hasFieldErrors()){
-           return validation(result);
+        if (result.hasFieldErrors()) {
+            return validation(result);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(space));
     }
 
     @PutMapping("/{id}")
-    public Optional<SpaceResponse> update(@PathVariable UUID id, @RequestBody SpaceRequest space) {
-        return service.update(id, space);
+    public ResponseEntity<?> update(@Valid @RequestBody SpaceRequest space, BindingResult result,
+            @PathVariable UUID id) {
+
+        if (result.hasFieldErrors()) {
+            return validation(result);
+        }
+
+        Optional<SpaceResponse> optionalSpace = service.update(id, space);
+        if(optionalSpace.isPresent()){
+            return ResponseEntity.status(HttpStatus.CREATED).body(optionalSpace);
+        }
+
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @DeleteMapping("/{id}")
@@ -80,7 +91,5 @@ public class SpaceControllers {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
-
-    
 
 }

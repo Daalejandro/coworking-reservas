@@ -9,9 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.mapper.UserMapper;
+import com.bancocuscatlan.mcvs.coworking.reservas.dto.request.SpaceRequest;
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.request.UserRequest;
+import com.bancocuscatlan.mcvs.coworking.reservas.dto.response.SpaceResponse;
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.response.UserResponse;
 import com.bancocuscatlan.mcvs.coworking.reservas.entities.Roles;
+import com.bancocuscatlan.mcvs.coworking.reservas.entities.Space;
 import com.bancocuscatlan.mcvs.coworking.reservas.entities.Users;
 import com.bancocuscatlan.mcvs.coworking.reservas.repositories.RolRepository;
 import com.bancocuscatlan.mcvs.coworking.reservas.repositories.UserRepository;
@@ -63,7 +66,7 @@ public class UserServiceImpl implements IUserService {
         optionalRolUser.ifPresent(r-> listaRoles.add(r));
 
         if(userRequest.isAdmin()){
-                Optional<Roles> optionalRolAdmin = rolRepository.findByNombre("ROL_ADMIN");
+                Optional<Roles> optionalRolAdmin = rolRepository.findByNombre("ROLE_ADMIN");
                 optionalRolAdmin.ifPresent(r-> listaRoles.add(r));
         }
 
@@ -79,16 +82,27 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Optional<UserResponse> update(UUID id, UserRequest userRequest) {
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    public Optional<UserResponse> update(UUID id, UserRequest user) {
+
+        Optional<Users> optionaUser = userRepositorio.findById(id);
+
+        if (optionaUser.isPresent()) {
+            Users userUpdate = optionaUser.orElseThrow();
+            userUpdate.setCorreo(userUpdate.getCorreo());
+            userUpdate.setContrasenia(user.getContrasenia());
+            userUpdate.setNombre(user.getNombre());
+
+            return Optional.of(userMapper.toUserResponse(userRepositorio.save(userUpdate)));
+
+        }
+
+        return optionaUser.map(u-> userMapper.toUserResponse(u));
     }
 
     @Override
     public void delete(UUID id) {
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+      
+        userRepositorio.deleteById(id);
     }
-
-    
-
 
 }

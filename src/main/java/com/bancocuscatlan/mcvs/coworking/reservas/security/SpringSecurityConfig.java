@@ -27,13 +27,10 @@ import org.springframework.web.filter.CorsFilter;
 import com.bancocuscatlan.mcvs.coworking.reservas.security.filter.JwtAuthenticationFilter;
 import com.bancocuscatlan.mcvs.coworking.reservas.security.filter.JwtValidationFilter;
 
-@Configuration 
+@Configuration
 public class SpringSecurityConfig {
 
-      
     private AuthenticationConfiguration authenticationConfiguration;
-
-    
 
     public SpringSecurityConfig(AuthenticationConfiguration authenticationConfiguration) {
         this.authenticationConfiguration = authenticationConfiguration;
@@ -52,8 +49,10 @@ public class SpringSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((authz) -> authz
-                .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/users/create").permitAll()
+                .requestMatchers("/api/users/**").permitAll()
+                .requestMatchers("/api/space/**").permitAll()
+                .requestMatchers("/api/reservation/**").permitAll()
+
                 /*
                  * .requestMatchers(HttpMethod.POST,"/api/users").hasRole("ADMIN")
                  * .requestMatchers(HttpMethod.GET,"/api/products","/api/products/{id}").
@@ -62,13 +61,15 @@ public class SpringSecurityConfig {
                  * .requestMatchers(HttpMethod.PUT,"/api/products/{id}").hasRole("ADMIN")
                  * .requestMatchers(HttpMethod.DELETE,"/api/products/{id}").hasRole("ADMIN")
                  */
+                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
-                  .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+                .requestMatchers("/actuator/circuitbreakers","/actuator/circuitbreakerevents","/actuator/health").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
                 .anyRequest().authenticated())
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtValidationFilter(authenticationManager()))
                 .csrf(config -> config.disable())
-                //.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                // .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(man -> man.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }

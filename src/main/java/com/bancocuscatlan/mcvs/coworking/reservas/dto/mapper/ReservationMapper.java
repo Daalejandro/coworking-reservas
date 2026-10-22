@@ -1,5 +1,7 @@
 package com.bancocuscatlan.mcvs.coworking.reservas.dto.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -21,5 +23,8 @@ public interface ReservationMapper {
     @Mapping(target = "nombreId", source = "usuarios.nombre")
     @Mapping(target = "espacioId", source = "espacios.id") 
     ReservationResponse toResponse(Reservation reservation);
+
+
+    List<ReservationResponse> toLisReservationResponse(List<Reservation> listReservations);
 
 }

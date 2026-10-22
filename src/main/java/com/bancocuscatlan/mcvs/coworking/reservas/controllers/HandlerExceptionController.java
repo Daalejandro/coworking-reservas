@@ -10,6 +10,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.Error;
+import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.ReservedNotFoundException;
 import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.SpaceNotFoudException;
 import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.SpaceOccupiedException;
 
@@ -61,6 +62,17 @@ public class HandlerExceptionController {
         Error error = new Error();
         error.setDate(new Date());
         error.setError("Espacio no encontrado");
+        error.setMessage(e.getMessage());
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(error);
+
+    }
+
+    @ExceptionHandler(ReservedNotFoundException.class)
+    public ResponseEntity<Error> ReservedNotFoundException(Exception e) {
+        Error error = new Error();
+        error.setDate(new Date());
+        error.setError("Reserva no encontrado");
         error.setMessage(e.getMessage());
         error.setStatus(HttpStatus.NOT_FOUND.value());
         return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(error);

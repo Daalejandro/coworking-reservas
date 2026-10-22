@@ -3,9 +3,11 @@ package com.bancocuscatlan.mcvs.coworking.reservas.services;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
-
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.javapoet.LordOfTheStrings.ReturnBuilderSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import com.bancocuscatlan.mcvs.coworking.reservas.entities.Reservation;
 import com.bancocuscatlan.mcvs.coworking.reservas.entities.ReservationStatus;
 import com.bancocuscatlan.mcvs.coworking.reservas.entities.Space;
 import com.bancocuscatlan.mcvs.coworking.reservas.entities.Users;
+import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.ReservedNotFoundException;
 import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.SpaceNotFoudException;
 import com.bancocuscatlan.mcvs.coworking.reservas.exceptions.SpaceOccupiedException;
 import com.bancocuscatlan.mcvs.coworking.reservas.repositories.EspacioRepositorio;
@@ -28,11 +31,8 @@ import com.bancocuscatlan.mcvs.coworking.reservas.repositories.UserRepository;
 import com.bancocuscatlan.mcvs.coworking.reservas.services.observer.ActualizarCacheReportesEvent;
 import com.bancocuscatlan.mcvs.coworking.reservas.services.observer.ReservaConfirmadaEvent;
 
-
-
 @Service
 public class ReservationServiceImpl implements IReservationService {
-
 
     private final ApplicationEventPublisher eventPublisher;
     private PagoService pagoService;
@@ -43,15 +43,17 @@ public class ReservationServiceImpl implements IReservationService {
     private EspacioRepositorio spaceRepository;
     private UserRepository userRepository;
 
-    public ReservationServiceImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper,ApplicationEventPublisher eventPublisher,
-            EspacioRepositorio spaceRepository, UserRepository userRepository,PagoService pagoService,NotificaionService notificaionService) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper,
+            ApplicationEventPublisher eventPublisher,
+            EspacioRepositorio spaceRepository, UserRepository userRepository, PagoService pagoService,
+            NotificaionService notificaionService) {
         this.userRepository = userRepository;
         this.spaceRepository = spaceRepository;
         this.reservationRepository = reservationRepository;
         this.reservationMapper = reservationMapper;
-        this.pagoService=pagoService;
-        this.notificaionService=notificaionService;
-        this.eventPublisher=eventPublisher;
+        this.pagoService = pagoService;
+        this.notificaionService = notificaionService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -124,15 +126,53 @@ public class ReservationServiceImpl implements IReservationService {
             reservation.setStatus(ReservationStatus.CONFIRMED);
             reservationRepository.save(reservation);
 
-            eventPublisher.publishEvent(new ReservaConfirmadaEvent(reservation.getId(),reservation.getUsuarios().getCorreo()));
-            eventPublisher.publishEvent(new ActualizarCacheReportesEvent(reservation.getHoraInicio(),reservation.getHoraFin()));        //llamamos al observador para eliminar cache
+            eventPublisher.publishEvent(
+                    new ReservaConfirmadaEvent(reservation.getId(), reservation.getUsuarios().getCorreo()));//llamamos al observador para envio del correo
+            eventPublisher.publishEvent(
+                    new ActualizarCacheReportesEvent(reservation.getHoraInicio(), reservation.getHoraFin())); //Lamando al observador, eliminar cache
 
+            return new PaymantResponse(true, "Pago aprobado. Reserva confirmada");
 
-            return new PaymantResponse(true,"Pago aprobado. Reserva confirmada");
-              
         }
 
         return respuesta;
+    }
+
+
+    @Transactional (readOnly = true)
+    @Override
+    public List<ReservationResponse> findAll() {
+
+      List<Reservation> listReservation=  (List<Reservation>)reservationRepository.findAll();
+
+        return reservationMapper.toLisReservationResponse(listReservation);
+    }
+
+    @Transactional (readOnly = true)
+    @Override
+    public List<ReservationResponse> reservacionesPorCorre(String correo) {
+        
+         List<Reservation> listReservation=  (List<Reservation>)reservationRepository.reservacionesPorCorre(correo);
+         
+         return reservationMapper.toLisReservationResponse(listReservation);
+    }
+
+    @Transactional 
+    @Override
+    public ReservationResponse actualizar(String correo, UUID idReserva) {
+
+                Reservation reservation = reservationRepository
+                .findById(idReserva)
+                .orElseThrow(() -> new ReservedNotFoundException("La reserva no existe"));
+
+                if(reservation.getUsuarios().getCorreo().equals(correo)){
+                    reservation.setStatus(ReservationStatus.CANCELLED);
+                    return reservationMapper.toResponse(reservationRepository.save(reservation));
+                }
+
+            return reservationMapper.toResponse(reservation);
+
+            
     }
 
     private BigDecimal calcularTotal(
@@ -150,4 +190,6 @@ public class ReservationServiceImpl implements IReservationService {
 
         return tarifaPorHora.multiply(BigDecimal.valueOf(horas));
     }
+    
+
 }
