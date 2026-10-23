@@ -1,0 +1,4 @@
+mock:
+  pago:
+    escenario: LENTO
+    demora-ms: 5000
