@@ -18,12 +18,16 @@ public class Space {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(nullable = false)
     private String nombre;
 
+    @Column(nullable = false)
     private String tipo;
 
+    @Column(nullable = false)
     private Integer capacidad;
 
+    @Column(nullable = false)
     private String ubicacion;
 
     @Column(precision = 10, scale = 2)

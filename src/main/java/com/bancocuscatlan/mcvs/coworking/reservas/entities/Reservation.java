@@ -33,8 +33,9 @@ public class Reservation {
     @JoinColumn(name = "espacio_id", nullable = false)
     private Space espacios;
 
+    @Column(nullable = false)
     private LocalDateTime horaInicio;
-
+    @Column(nullable = false)
     private LocalDateTime horaFin;
 
     @Enumerated(EnumType.STRING)

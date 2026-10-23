@@ -27,6 +27,7 @@ public class UserRequest {
 
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "El correo debe tener un formato válido")
+
     @Size(max = 254, message = "El correo no debe superar los 254 caracteres")
     private String correo;
 

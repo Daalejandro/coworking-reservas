@@ -1,0 +1,647 @@
+{
+  "info": {
+    "_postman_id": "eafc503c-7c56-4d54-bfa4-8abb216c6ce6",
+    "name": "Prueba Tecnica",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "37007959"
+  },
+  "item": [
+    {
+      "name": "RestUser",
+      "item": [
+        {
+          "name": "crearUsuario",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\":\"Daniel 2\",\r\n    \"contrasenia\":\"da123456\",\r\n    \"correo\":\"danyelmenjivar@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/users/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CrearUsuarioAdmin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\":\"Administrador\",\r\n    \"contrasenia\":\"da123456\",\r\n    \"correo\":\"admin@gmail.com\",\r\n    \"admin\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ActualizarUsuario",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIiwiRkFDVE9SX1BBU1NXT1JEIl0sImV4cCI6MTc5MjcyNTQ2NiwiaWF0IjoxNzkyNzIxODY2fQ.SHJQsVKkHVQIistrePaEMZzWG_zPBNNNkC1rJIvnkz4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "    {\r\n        \"correo\": \"alejandro@gmail.com\",\r\n        \"nombre\": \"daniel 2\",\r\n        \"contrasenia\":\"da123456\"\r\n        \r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/users/9ca08fb8-d496-476b-9d35-ed9d235a3614",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users",
+                "9ca08fb8-d496-476b-9d35-ed9d235a3614"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ListarUsuarioAdmin",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIiwiRkFDVE9SX1BBU1NXT1JEIl0sImV4cCI6MTc5MjcyNDY1NCwiaWF0IjoxNzkyNzIxMDU0fQ.e2T3tDJBL6FmgcrL3dP82-FlDz_AHnvhiFxRfNpEBtw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\":\"b\",\r\n    \"contrasenia\":\"da123456\",\r\n    \"correo\":\"danyelmenjivar@gmail.com\",\r\n    \"admin\": true\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "EliminarUsuarioAdmin",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\":\"b\",\r\n    \"contrasenia\":\"da123456\",\r\n    \"correo\":\"danyelmenjivar@gmail.com\",\r\n    \"admin\": true\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/users/8342536f-779d-4c77-a424-6ee3ab8ec016",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users",
+                "8342536f-779d-4c77-a424-6ee3ab8ec016"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "RestSpace",
+      "item": [
+        {
+          "name": "crearEspacio",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"capacidad\":20,\r\n    \"nombre\":\"sala1\",\r\n    \"tipo\":\"sala reuniones\",\r\n    \"ubicacion\":\"san salvador\",\r\n    \"tarifa\":10.00,\r\n    \"disponible\":true\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/space",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "space"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "listarEspaciosAdmin",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/space",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "space"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "listarEspacioIdAdmin",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"capacidad\":20,\r\n    \"nombre\":\"sala1\",\r\n    \"tipo\":\"sala reuniones\",\r\n    \"ubicacion\":\"san salvador\",\r\n    \"tarifa\":20.00,\r\n    \"disponible\":true\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/space/8bd64e69-af5b-44ac-a149-037ab9cf8988",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "space",
+                "8bd64e69-af5b-44ac-a149-037ab9cf8988"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ActualizarEspacioAdmin",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"capacidad\": 20,\r\n    \"disponible\": false,\r\n    \"id\": \"8bd64e69-af5b-44ac-a149-037ab9cf8988\",\r\n    \"nombre\": \"sala 11\",\r\n    \"tarifa\": 20.00,\r\n    \"tipo\": \"sala reuniones\",\r\n    \"ubicacion\": \"san salvador\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/space/8bd64e69-af5b-44ac-a149-037ab9cf8988",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "space",
+                "8bd64e69-af5b-44ac-a149-037ab9cf8988"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "EliminarEspacioIdAdmin",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/space/8bd64e69-af5b-44ac-a149-037ab9cf8988",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "space",
+                "8bd64e69-af5b-44ac-a149-037ab9cf8988"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "RestReport",
+      "item": [
+        {
+          "name": "Reportes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/reportes/ocupacion?desde=2026-12-15T00:00:00&hasta=2026-12-17T00:00:00",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reportes",
+                "ocupacion"
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "2026-12-15T00:00:00"
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-12-17T00:00:00"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "RestReserved",
+      "item": [
+        {
+          "name": "reservacionesAdmin",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/reservation",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reservation"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reservasUser",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW5qaXZhckBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiLCJGQUNUT1JfUEFTU1dPUkQiXSwiZXhwIjoxNzkyNzIzNDM5LCJpYXQiOjE3OTI3MTk4Mzl9.DXPUpDe3TTYWsVX-bQ7ro3PW08RuY2uZFGcp_SMLM70",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/reservation/list",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reservation",
+                "list"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CrearReservacion",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW5qaXZhckBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiLCJGQUNUT1JfUEFTU1dPUkQiXSwiZXhwIjoxNzkyNzI2NzUwLCJpYXQiOjE3OTI3MjMxNTB9.oec7EOo7yoGHrfrB-yc_bo60625JM8pOIjA16z4WQ7c",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"espacioId\": \"44c8bcd1-cf87-4d95-8132-aece0902cd5d\",\r\n  \"horaInicio\": \"15/12/2029 09:00\",\r\n  \"horaFin\": \"25/12/2029 11:00\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/reservation",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reservation"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cancelarReserva",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW5qaXZhckBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiLCJGQUNUT1JfUEFTU1dPUkQiXSwiZXhwIjoxNzkyNzI4MzQ4LCJpYXQiOjE3OTI3MjQ3NDh9.qWZLsc9dji73_nsRSAHSYAY4z3tAS069KEuqsh0Hf7o",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idReserva\":\"5854a7b6-2217-4f8f-9eee-2b31352a445f\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/reservation",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reservation"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "validandoPago",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idReserva\":\"a9e182ec-acd6-465b-a885-54b0d9669057\",\r\n    \"metodoPago\":\"LENTO\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/reservation/validate",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reservation",
+                "validate"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "eliminarReservaAdmin",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/reservation/be7e867a-5ecc-40d8-9bd4-f180a8668f46",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reservation",
+                "be7e867a-5ecc-40d8-9bd4-f180a8668f46"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ActuatorInf",
+      "item": [
+        {
+          "name": "PruebaCircuitBreakActuator",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/circuitbreakerevents",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "actuator",
+                "circuitbreakerevents"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/circuitbreakerevents",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "actuator",
+                "circuitbreakerevents"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"correo\":\"menjivar@gmail.com\",\r\n    \"contrasenia\":\"da123456\"\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

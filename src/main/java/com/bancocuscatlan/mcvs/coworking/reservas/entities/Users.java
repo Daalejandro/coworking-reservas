@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,8 +27,13 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(nullable = false)
     private String nombre;
+
+     @Column(nullable = false)
     private String contrasenia;
+
+    @Column(nullable = false, unique = true)
     private String correo;
 
     @JsonIgnoreProperties({ "usuarios", "handler", "hibernateLazyInitializer" })

@@ -10,7 +10,10 @@ import lombok.Setter;
 @Setter 
 public class PaymantRequest {
 
+ 
     private UUID idReserva;
+  
     private String metodoPago;
+
     private BigDecimal total;
 }
