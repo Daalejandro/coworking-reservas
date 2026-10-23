@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.mapper.UserMapper;
 import com.bancocuscatlan.mcvs.coworking.reservas.dto.request.SpaceRequest;
@@ -19,7 +20,7 @@ import com.bancocuscatlan.mcvs.coworking.reservas.entities.Users;
 import com.bancocuscatlan.mcvs.coworking.reservas.repositories.RolRepository;
 import com.bancocuscatlan.mcvs.coworking.reservas.repositories.UserRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service 
 public class UserServiceImpl implements IUserService {
@@ -56,6 +57,7 @@ public class UserServiceImpl implements IUserService {
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
+    @Transactional 
     @Override
     public UserResponse save(UserRequest userRequest) {
 
@@ -80,7 +82,7 @@ public class UserServiceImpl implements IUserService {
     
 
     }
-
+    @Transactional
     @Override
     public Optional<UserResponse> update(UUID id, UserRequest user) {
 
@@ -99,6 +101,7 @@ public class UserServiceImpl implements IUserService {
         return optionaUser.map(u-> userMapper.toUserResponse(u));
     }
 
+    @Transactional 
     @Override
     public void delete(UUID id) {
       

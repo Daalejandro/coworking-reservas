@@ -23,7 +23,6 @@ public class PagoService {
     }
 
     @CircuitBreaker(name = "items", fallbackMethod = "pagoFallback")
-    @TimeLimiter(name = "items")
     public PaymantResponse validar(PaymantRequest request) {
 
         return paymantFeingClient.validar(request);

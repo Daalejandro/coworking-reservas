@@ -19,9 +19,10 @@ public class ReservationRequest {
     @NotNull(message = "El espacio es obligatorio")
     UUID espacioId;
 
-    @NotNull(message = "El espacio es obligatorio") //falta agreagra que valide el id con valid personalizada;
-    UUID usuarioId;
+  /*   @NotNull(message = "El espacio es obligatorio") //falta agreagra que valide el id con valid personalizada;
+    UUID usuarioId; */
     
+    String usuario;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     @NotNull(message = "La hora de inicio es obligatoria")

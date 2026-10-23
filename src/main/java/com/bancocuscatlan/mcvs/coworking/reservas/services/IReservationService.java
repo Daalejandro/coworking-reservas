@@ -20,4 +20,6 @@ public interface IReservationService {
     
     ReservationResponse actualizar(String correo,UUID idReserva);
 
+    void deleteReservation(UUID id);
+
 }

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.micrometer.observation.autoconfigure.ObservationProperties.Http;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,27 +50,34 @@ public class SpringSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/api/users/**").permitAll()
-                .requestMatchers("/api/space/**").permitAll()
-                .requestMatchers("/api/reservation/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/users/create").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/users/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/users/{id}").hasRole("ADMIN")
 
-                /*
-                 * .requestMatchers(HttpMethod.POST,"/api/users").hasRole("ADMIN")
-                 * .requestMatchers(HttpMethod.GET,"/api/products","/api/products/{id}").
-                 * hasAnyRole("USER")
-                 * .requestMatchers(HttpMethod.POST,"/api/products").hasRole("ADMIN")
-                 * .requestMatchers(HttpMethod.PUT,"/api/products/{id}").hasRole("ADMIN")
-                 * .requestMatchers(HttpMethod.DELETE,"/api/products/{id}").hasRole("ADMIN")
-                 */
+                .requestMatchers(HttpMethod.GET, "/api/space/{id}","/api/space").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/space").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/space/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/space/{id}").hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/api/reportes").hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.POST, "/api/reservation").hasAnyRole("USER","ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/reservation/validate").hasAnyRole("USER","ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/reservation").hasAnyRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/reservation/list").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.PUT, "/api/reservation/cancelar/{id}").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.PUT, "/api/reservation/{id}").hasAnyRole("ADMIN")
+
+
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
-                .requestMatchers("/actuator/circuitbreakers","/actuator/circuitbreakerevents","/actuator/health").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+                .requestMatchers("/actuator/circuitbreakers", "/actuator/circuitbreakerevents", "/actuator/health").permitAll()
+
                 .anyRequest().authenticated())
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtValidationFilter(authenticationManager()))
                 .csrf(config -> config.disable())
-                // .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(man -> man.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }

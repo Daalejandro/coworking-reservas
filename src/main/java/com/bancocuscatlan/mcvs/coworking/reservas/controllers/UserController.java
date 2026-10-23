@@ -48,7 +48,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(userRequest));
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create") 
     public ResponseEntity<?> registrarse(@Valid @RequestBody UserRequest userRequest, BindingResult result) {
         userRequest.setAdmin(false);
         return create(userRequest, result);
