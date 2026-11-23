@@ -1,4 +1,4 @@
 mock:
   pago:
-    escenario: LENTO
+    escenario: ERROR
     demora-ms: 5000

@@ -44,3 +44,4 @@ resilience4j:
     instances:
       items:
         register-health-indicator: true
+
