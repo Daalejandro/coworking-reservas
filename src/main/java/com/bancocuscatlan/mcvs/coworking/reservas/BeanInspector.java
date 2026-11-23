@@ -36,7 +36,7 @@ public class BeanInspector implements CommandLineRunner {
                     + definition.getResourceDescription());
             System.out.println("Método fábrica: "
                     + definition.getFactoryMethodName());
-            System.out.println("Clase fabrica: "
+            System.out.println("Clase rama pruebas: "
                     + definition.getFactoryBeanName());
         }
     }
